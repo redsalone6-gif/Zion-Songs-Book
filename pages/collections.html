@@ -1,0 +1,51 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Collections · Zion Songs Book</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html">Zion Songs Book</a>
+      <nav class="nav">
+        <a href="chord-library.html">Library</a>
+        <a href="add-new-song.html">Add Song</a>
+        <a class="active" href="collections.html">Collections</a>
+        <a href="tuner.html">Tuner</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="panel" style="padding:20px">
+      <div class="badge">Collections</div>
+      <h1 style="margin:12px 0 0">Playlists & Favorites</h1>
+      <p class="footer-note">Songs are grouped automatically by collection. Favorites are shown separately.</p>
+      <div id="collectionsRoot" class="list" style="margin-top:18px"></div>
+    </section>
+  </main>
+  <script src="../assets/app.js"></script>
+  <script>
+    function renderCollections() {
+      const songs = getSongs();
+      const favorites = songs.filter(s => s.favorite);
+      const byCollection = {};
+      for (const song of songs) {
+        const key = song.collection || 'Uncategorized';
+        byCollection[key] = byCollection[key] || [];
+        byCollection[key].push(song);
+      }
+      let html = '';
+      html += `<section class="card"><h3>Favorites</h3>${favorites.length ? favorites.map(songCard).join('') : '<div class="empty">No favorite songs yet.</div>'}</section>`;
+      for (const [name, entries] of Object.entries(byCollection).sort((a,b)=>a[0].localeCompare(b[0]))) {
+        html += `<section class="card"><h3>${escapeHtml(name)}</h3>${entries.map(songCard).join('')}</section>`;
+      }
+      document.getElementById('collectionsRoot').innerHTML = html;
+    }
+    renderCollections();
+  </script>
+</body>
+</html>
