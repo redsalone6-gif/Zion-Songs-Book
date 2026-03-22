@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title><?= appTitle ?></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+    <?!= include('Styles'); ?>
+    <script>window.__EXTERNAL_TUNER_URL__ = <?= JSON.stringify(externalTunerUrl) ?>;</script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">The Modern Archivist</p>
+          <h1 class="app-title"><?= appTitle ?></h1>
+        </div>
+        <button class="icon-btn" id="focusSearchBtn" aria-label="Focus search">⌕</button>
+      </header>
+
+      <main class="content">
+        <section class="view is-active" id="view-library">
+          <div class="hero-card" id="featuredCard"></div>
+
+          <section class="search-panel">
+            <label class="search-wrap">
+              <span class="search-icon">⌕</span>
+              <input id="searchInput" type="search" placeholder="Search by title, artist, lyric, key...">
+            </label>
+          </section>
+
+          <section class="stats-grid" id="statsGrid"></section>
+
+          <section class="section-block">
+            <div class="section-head">
+              <h2>Library</h2>
+              <button class="text-btn" id="refreshBtn" type="button">Refresh</button>
+            </div>
+            <div class="song-list" id="songList"></div>
+            <div class="empty-state hidden" id="songEmptyState">
+              <h3>No songs found</h3>
+              <p>Try another search term or add a new song.</p>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-add">
+          <section class="section-block form-block">
+            <div class="section-head section-head-stack">
+              <div>
+                <p class="eyebrow">New Manuscript</p>
+                <h2>Add Song</h2>
+              </div>
+              <p class="muted">This form saves directly into your Google Sheet through Apps Script.</p>
+            </div>
+
+            <form id="songForm" class="song-form">
+              <input type="hidden" id="songId" name="id">
+
+              <div class="form-grid">
+                <label>
+                  <span>Title *</span>
+                  <input type="text" id="title" name="title" required>
+                </label>
+
+                <label>
+                  <span>Artist</span>
+                  <input type="text" id="artist" name="artist">
+                </label>
+
+                <label>
+                  <span>Key</span>
+                  <input type="text" id="key" name="key" placeholder="C, G, Bb...">
+                </label>
+
+                <label>
+                  <span>BPM</span>
+                  <input type="number" id="bpm" name="bpm" min="1" step="1">
+                </label>
+
+                <label>
+                  <span>Duration</span>
+                  <input type="text" id="duration" name="duration" placeholder="3:45">
+                </label>
+
+                <label>
+                  <span>Genre</span>
+                  <input type="text" id="genre" name="genre">
+                </label>
+              </div>
+
+              <label>
+                <span>Chords</span>
+                <textarea id="chords" name="chords" rows="3" placeholder="C G Am F"></textarea>
+              </label>
+
+              <label>
+                <span>Lyrics</span>
+                <textarea id="lyrics" name="lyrics" rows="10" placeholder="Paste the lyrics here..."></textarea>
+              </label>
+
+              <label class="checkbox-row">
+                <input type="checkbox" id="isFavorite" name="isFavorite">
+                <span>Mark as favorite</span>
+              </label>
+
+              <div class="form-actions">
+                <button class="secondary-btn" id="resetFormBtn" type="button">Clear</button>
+                <button class="primary-btn" id="saveSongBtn" type="submit">Save Song</button>
+              </div>
+            </form>
+          </section>
+        </section>
+
+        <section class="view" id="view-playlists">
+          <section class="section-block">
+            <div class="section-head section-head-stack">
+              <div>
+                <p class="eyebrow">Curated Collections</p>
+                <h2>Playlists</h2>
+              </div>
+              <p class="muted">Setlists and collections pulled from the Playlists sheet.</p>
+            </div>
+            <div class="playlist-list" id="playlistList"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-chords">
+          <section class="section-block">
+            <div class="section-head section-head-stack">
+              <div>
+                <p class="eyebrow">Reference Shelf</p>
+                <h2>Chord Library</h2>
+              </div>
+              <p class="muted">Quick lookup for commonly used chord shapes.</p>
+            </div>
+            <div class="chord-grid" id="chordGrid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-tuner">
+          <section class="section-block">
+            <div class="section-head section-head-stack">
+              <div>
+                <p class="eyebrow">Studio Utility</p>
+                <h2>Chord Tuner</h2>
+              </div>
+              <p class="muted">Open the standalone tuner page for reliable microphone access on mobile.</p>
+            </div>
+
+            <div class="tuner-panel">
+              <div class="tuner-readout">
+                <div class="tuner-status" id="tunerStatus">External</div>
+                <div class="tuner-note" id="tunerNote">🎸</div>
+                <div class="tuner-frequency" id="tunerFrequency">Standalone</div>
+                <div class="tuner-detail" id="tunerDetail">Tap Open Tuner. The tuner runs outside Apps Script so microphone permission works on mobile.</div>
+              </div>
+
+              <div class="tuner-actions">
+                <button class="primary-btn" id="startTunerBtn" type="button">Open Tuner</button>
+                <button class="secondary-btn" id="stopTunerBtn" type="button">Copy Link</button>
+              </div>
+
+              <div class="reference-grid" id="referenceGrid"></div>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav">
+        <button class="nav-btn is-active" data-view="library" type="button">Library</button>
+        <button class="nav-btn" data-view="add" type="button">Add</button>
+        <button class="nav-btn" data-view="playlists" type="button">Playlists</button>
+        <button class="nav-btn" data-view="chords" type="button">Chords</button>
+        <button class="nav-btn" data-view="tuner" type="button">Tuner</button>
+      </nav>
+    </div>
+
+    <aside class="modal hidden" id="songModal">
+      <div class="modal-backdrop" id="closeModalBackdrop"></div>
+      <div class="modal-sheet">
+        <button class="close-btn" id="closeModalBtn" aria-label="Close">×</button>
+        <div id="songDetailContent"></div>
+      </div>
+    </aside>
+
+    <div class="toast hidden" id="toast"></div>
+
+    <script>
+      window.__APP_DATA__ = <?!= initialData ?>;
+    </script>
+    <?!= include('Scripts'); ?>
+  </body>
+</html>
