@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<title>My Songbook</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;500;700;800&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#3f3f3f",
+              "surface-container-highest": "#e2e3d9",
+              "tertiary-fixed": "#fdeccf",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#e8e9e0",
+              "background": "#fbf9f4",
+              "on-secondary": "#fcf8f4",
+              "tertiary": "#695e47",
+              "primary-dim": "#535252",
+              "surface-bright": "#fbf9f4",
+              "tertiary-dim": "#5d523c",
+              "on-background": "#31332c",
+              "on-primary": "#faf7f6",
+              "on-secondary-fixed": "#403f3d",
+              "primary-fixed": "#e4e2e1",
+              "secondary-container": "#e5e2de",
+              "on-tertiary-fixed-variant": "#6d614b",
+              "on-secondary-container": "#52524f",
+              "primary-container": "#e4e2e1",
+              "secondary": "#605f5c",
+              "on-surface-variant": "#5e6058",
+              "secondary-dim": "#545350",
+              "on-tertiary-fixed": "#4f4530",
+              "secondary-fixed": "#e5e2de",
+              "surface": "#fbf9f4",
+              "on-tertiary-container": "#625741",
+              "surface-variant": "#e2e3d9",
+              "on-surface": "#31332c",
+              "primary": "#5f5e5e",
+              "inverse-primary": "#ffffff",
+              "surface-container": "#efeee6",
+              "secondary-fixed-dim": "#d7d4d0",
+              "outline": "#797c73",
+              "on-error-container": "#752121",
+              "on-primary-fixed-variant": "#5c5b5b",
+              "error-container": "#fe8983",
+              "tertiary-fixed-dim": "#eedec2",
+              "on-secondary-fixed-variant": "#5c5b58",
+              "inverse-on-surface": "#9e9d99",
+              "error-dim": "#4e0309",
+              "inverse-surface": "#0e0e0c",
+              "on-tertiary": "#fff8f0",
+              "primary-fixed-dim": "#d6d4d3",
+              "outline-variant": "#b1b3a9",
+              "on-error": "#fff7f6",
+              "surface-container-low": "#f5f4ed",
+              "surface-dim": "#d9dbcf",
+              "tertiary-container": "#fdeccf",
+              "on-primary-container": "#525151",
+              "surface-tint": "#5f5e5e",
+              "error": "#9f403d"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Newsreader"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #fbf9f4;
+            color: #31332c;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Chord Diagram Styles */
+        .chord-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            width: 60px;
+            height: 70px;
+            padding: 4px;
+            background: #fdfcf9;
+            border: 1px solid #b1b3a9;
+            position: relative;
+        }
+        .fret-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #b1b3a9;
+        }
+        .string-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #b1b3a9;
+        }
+        .chord-dot {
+            width: 6px;
+            height: 6px;
+            background: #31332c;
+            border-radius: 50%;
+            z-index: 10;
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-label selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+<!-- TopAppBar -->
+<header class="bg-[#fbf9f4] dark:bg-stone-950 flex justify-between items-center px-6 h-16 w-full fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#5f5e5e] dark:text-stone-300 hover:bg-[#efeee6] dark:hover:bg-stone-800 transition-colors p-2 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined">menu_open</span>
+</button>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-xl text-[#31332c] dark:text-stone-100">The Archivist</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-[#5f5e5e] dark:text-stone-300 hover:bg-[#efeee6] dark:hover:bg-stone-800 transition-colors p-2 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="min-h-screen pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Search & Filter Header -->
+<section class="mb-8">
+<h2 class="font-headline text-[2.75rem] font-extrabold text-on-surface leading-none mb-8 tracking-tighter">Library</h2>
+<div class="flex flex-col sm:flex-row gap-4 mb-6">
+<div class="relative flex-grow group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+<input class="w-full bg-surface-container-low border-b border-outline-variant/30 py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-all font-label text-sm placeholder:text-outline-variant/60 placeholder:italic" placeholder="Search by title, artist, or lyric fragment..." type="text"/>
+</div>
+<div class="relative shrink-0">
+<button class="h-full flex items-center justify-between gap-3 px-5 py-3 bg-surface-container-low border-b border-outline-variant/30 hover:bg-surface-container-lowest transition-colors group/sort">
+<div class="flex flex-col items-start">
+<span class="font-label text-[10px] uppercase tracking-widest text-tertiary/60 leading-none mb-1">Sort by</span>
+<span class="font-body text-sm text-on-surface italic font-medium">Recent</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover/sort:text-primary transition-colors">sort</span>
+</button>
+</div>
+</div>
+<!-- Language Selection Filter -->
+<div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2">
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold whitespace-nowrap transition-all shadow-sm active:scale-95">English</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-medium whitespace-nowrap transition-all hover:bg-surface-container-highest active:scale-95">Nepali</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-medium whitespace-nowrap transition-all hover:bg-surface-container-highest active:scale-95">Hindi</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-medium whitespace-nowrap transition-all hover:bg-surface-container-highest active:scale-95">Instrumental</button>
+</div>
+<!-- Artist Selection Filter -->
+<div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2 mt-4">
+<span class="font-label text-[10px] uppercase tracking-widest text-tertiary mr-2 shrink-0">Artist:</span>
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold whitespace-nowrap transition-all shadow-sm active:scale-95">All Artists</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-medium whitespace-nowrap transition-all hover:bg-surface-container-highest active:scale-95">Tom Petty</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-medium whitespace-nowrap transition-all hover:bg-surface-container-highest active:scale-95">The Beatles</button>
+</div>
+</section>
+<!-- Song Grid: Tactile Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Featured Card (Large) -->
+<div class="md:col-span-8 bg-surface-container-lowest p-8 rounded-xl shadow-[0_10px_30px_rgba(49,51,44,0.03)] flex flex-col justify-between min-h-[320px] relative overflow-hidden group border border-outline-variant/10">
+<div class="relative z-10">
+<span class="font-label text-[0.6875rem] uppercase tracking-widest text-tertiary mb-2 block">Recently Opened</span>
+<h3 class="font-headline text-3xl font-bold text-on-surface mb-2">Wildflowers</h3>
+<p class="font-body text-xl text-secondary italic mb-4">Tom Petty</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase rounded-full">Folk Rock</span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase rounded-full">Key: Bb</span>
+<div class="flex items-center gap-1.5 ml-1">
+<span class="font-label text-[9px] font-bold text-tertiary/60 uppercase tracking-widest mr-1">Chords:</span>
+<button class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold uppercase rounded border border-tertiary/10 hover:bg-tertiary-fixed transition-colors">Bb</button>
+<button class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold uppercase rounded border border-tertiary/10 hover:bg-tertiary-fixed transition-colors">F</button>
+<button class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold uppercase rounded border border-tertiary/10 hover:bg-tertiary-fixed transition-colors">Eb</button>
+</div>
+</div>
+</div>
+<div class="mt-8 flex items-center justify-between relative z-10">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="Musician portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcYBG_D9Kef1Cu4p6Lyrh8BRQOE4InqG1bvydNFaF9JkI72n9lNN_Vdq5YdjLblXpAR6YjX3PO56YOfZoXPJXzrrRpcRDTnj7d8I3cDcLFarCzWYFjoCaSiUo4RvadZx5TEd1v9bgol0swEJDdOxdmD3FREZzJgUkgaIK75GxmmMf3IiEdKvgj00VIxczBeVStIU7JjwdKVZupvb5V7VBfMbWKZ3VBkiB5q2jRxicaOetw4K6dYHEaDaIakK0V2WmiEYS6CdLzXQ"/>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-md font-label text-xs font-bold flex items-center gap-2 hover:bg-primary-dim transition-colors shadow-sm">
+                    PERFORM <span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+<div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-surface-container/20 to-transparent pointer-events-none"></div>
+</div>
+<!-- Side Card (Stats) -->
+<div class="md:col-span-4 bg-surface-container-low p-6 rounded-xl flex flex-col border border-outline-variant/10">
+<span class="font-label text-[0.6875rem] uppercase tracking-widest text-tertiary mb-6 block">Stats</span>
+<div class="space-y-4">
+<div class="flex justify-between items-end pb-2 border-b border-outline-variant/10">
+<span class="font-label text-xs text-on-surface-variant">Total Songs</span>
+<span class="font-headline text-2xl font-bold">128</span>
+</div>
+<div class="flex justify-between items-end pb-2 border-b border-outline-variant/10">
+<span class="font-label text-xs text-on-surface-variant">Setlists</span>
+<span class="font-headline text-2xl font-bold">14</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-label text-xs text-on-surface-variant">Practice Goal</span>
+<span class="font-headline text-2xl font-bold">82%</span>
+</div>
+</div>
+</div>
+<!-- Main Library Grid: Tactile Grid View -->
+<div class="md:col-span-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
+<!-- Song Card 1 (Showcasing Active Chord Clicked) -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/5 shadow-sm hover:shadow-md transition-all group cursor-pointer aspect-square flex flex-col justify-between relative overflow-visible">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 bg-surface-container rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base">music_note</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-bold text-on-surface leading-tight mb-0.5">Blackbird</h4>
+<p class="font-body text-sm text-secondary italic mb-3">The Beatles</p>
+<div class="flex items-center gap-2 flex-wrap mb-2">
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">English</span>
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Classic Rock</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/10 flex flex-wrap gap-1">
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all relative">
+                            G
+                            <!-- Popover Chord Diagram for G -->
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 bg-surface-container-lowest border border-outline-variant shadow-xl rounded-lg z-30 flex flex-col items-center">
+<span class="font-label text-[8px] font-bold mb-1">G Major</span>
+<div class="chord-grid relative">
+<div class="fret-line" style="top: 0%"></div>
+<div class="fret-line" style="top: 25%"></div>
+<div class="fret-line" style="top: 50%"></div>
+<div class="fret-line" style="top: 75%"></div>
+<div class="fret-line" style="top: 100%"></div>
+<div class="string-line" style="left: 0%"></div>
+<div class="string-line" style="left: 20%"></div>
+<div class="string-line" style="left: 40%"></div>
+<div class="string-line" style="left: 60%"></div>
+<div class="string-line" style="left: 80%"></div>
+<div class="string-line" style="left: 100%"></div>
+<!-- Dots for G chord -->
+<div class="chord-dot absolute" style="top: 75%; left: -5%"></div>
+<div class="chord-dot absolute" style="top: 50%; left: 15%"></div>
+<div class="chord-dot absolute" style="top: 75%; left: 95%"></div>
+</div>
+<div class="absolute w-2 h-2 bg-surface-container-lowest border-r border-b border-outline-variant rotate-45 -bottom-1 left-1/2 -translate-x-1/2"></div>
+</div>
+</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">Am</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">G/B</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">C</button>
+</div>
+</div>
+</div>
+<!-- Song Card 2 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/5 shadow-sm hover:shadow-md transition-all group cursor-pointer aspect-square flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 bg-surface-container rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base">music_note</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-bold text-on-surface leading-tight mb-0.5">Resham Firiri</h4>
+<p class="font-body text-sm text-secondary italic mb-3">Traditional Nepali</p>
+<div class="flex items-center gap-2 flex-wrap mb-2">
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Nepali</span>
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Folk</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/10 flex flex-wrap gap-1">
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">G</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">C</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">D</button>
+</div>
+</div>
+</div>
+<!-- Song Card 3 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/5 shadow-sm hover:shadow-md transition-all group cursor-pointer aspect-square flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 bg-surface-container rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base">music_note</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-bold text-on-surface leading-tight mb-0.5">Tum Hi Ho</h4>
+<p class="font-body text-sm text-secondary italic mb-3">Arijit Singh</p>
+<div class="flex items-center gap-2 flex-wrap mb-2">
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Hindi</span>
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Bollywood</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/10 flex flex-wrap gap-1">
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">Am</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">F</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">G</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">Em</button>
+</div>
+</div>
+</div>
+<!-- Song Card 4 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/5 shadow-sm hover:shadow-md transition-all group cursor-pointer aspect-square flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 bg-surface-container rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base">music_note</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-bold text-on-surface leading-tight mb-0.5">Fast Car</h4>
+<p class="font-body text-sm text-secondary italic mb-3">Tracy Chapman</p>
+<div class="flex items-center gap-2 flex-wrap mb-2">
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">English</span>
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Soul</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/10 flex flex-wrap gap-1">
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">C</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">G</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">Em</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">D</button>
+</div>
+</div>
+</div>
+<!-- Song Card 5 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/5 shadow-sm hover:shadow-md transition-all group cursor-pointer aspect-square flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 bg-surface-container rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base">music_note</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</div>
+<div>
+<h4 class="font-headline text-base font-bold text-on-surface leading-tight mb-0.5">Phoolko Aankhama</h4>
+<p class="font-body text-sm text-secondary italic mb-3">Ani Choying Drolma</p>
+<div class="flex items-center gap-2 flex-wrap mb-2">
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Nepali</span>
+<span class="text-[9px] font-bold text-tertiary uppercase tracking-tighter bg-surface-container px-1.5 py-0.5 rounded">Spiritual</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/10 flex flex-wrap gap-1">
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">D</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">G</button>
+<button class="text-[9px] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/30 border border-tertiary/10 px-2 py-0.5 rounded-sm hover:bg-tertiary-container shadow-sm transition-all">A</button>
+</div>
+</div>
+</div>
+<!-- Song Card 6 (View All State) -->
+<div class="bg-surface-container flex flex-col items-center justify-center p-5 rounded-xl border border-dashed border-outline-variant group cursor-pointer hover:bg-surface-container-high transition-colors aspect-square">
+<span class="material-symbols-outlined text-3xl text-outline mb-2">auto_stories</span>
+<p class="font-label text-xs font-bold text-secondary text-center">View Archive</p>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB: Add Song -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_10px_30px_rgba(49,51,44,0.15)] flex items-center justify-center z-40 active:scale-90 transition-transform hover:bg-primary-dim">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fbf9f4]/80 dark:bg-stone-950/80 backdrop-blur-xl border-t border-[#b1b3a9]/20 shadow-[0_-4px_20px_rgba(49,51,44,0.05)]">
+<a class="flex flex-col items-center justify-center text-[#31332c] dark:text-white font-bold bg-[#efeee6] dark:bg-stone-800 rounded-xl px-3 py-1 active:translate-y-0.5 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">library_music</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#695e47] dark:text-stone-500 opacity-70 hover:opacity-100 active:translate-y-0.5 transition-transform" href="#">
+<span class="material-symbols-outlined">format_list_bulleted</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Setlists</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#695e47] dark:text-stone-500 opacity-70 hover:opacity-100 active:translate-y-0.5 transition-transform" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#695e47] dark:text-stone-500 opacity-70 hover:opacity-100 active:translate-y-0.5 transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Settings</span>
+</a>
+</nav>
+<!-- NavigationDrawer -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full z-[60] p-4 flex-col gap-2 bg-[#f5f4ed] dark:bg-stone-900 w-72 rounded-r-2xl shadow-2xl transition-all duration-300 ease-in-out -translate-x-full">
+<div class="mb-8 px-4 pt-4">
+<h2 class="text-[#31332c] font-black font-headline text-xl">Collections</h2>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 bg-[#ffffff] dark:bg-stone-800 text-[#31332c] dark:text-white font-semibold shadow-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">music_note</span>
+<span class="font-headline text-sm">All Songs</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#5f5e5e] dark:text-stone-400 hover:bg-[#e8e9e0] dark:hover:bg-stone-700 rounded-lg" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-headline text-sm">Recent</span>
+</a>
+</nav>
+</aside>
+</body></html>
